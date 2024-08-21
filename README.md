@@ -1,0 +1,1 @@
+[![codecov](https://codecov.io/gh/Ar-b-ra/REST_Test/branch/master/graph/badge.svg)](https://codecov.io/gh/Ar-b-ra/REST_Test)
