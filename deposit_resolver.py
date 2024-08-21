@@ -29,7 +29,7 @@ class Deposit:
 
     def verify_date(self):
         day, month, year = self.date.split(".")
-        if not (len(day) != 2 and len(month) != 2 and len(year) == 4):
+        if len(day) != 2 or len(month) != 2 or len(year) != 4:
             return False
         try:
             datetime.strptime(self.date, "%d.%m.%Y")
