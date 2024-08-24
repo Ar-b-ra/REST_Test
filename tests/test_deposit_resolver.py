@@ -6,7 +6,7 @@ from deposit_resolver import (
     MAX_PERIODS,
     MAX_RATE,
     MIN_AMOUNT,
-    MIN_RATE,
+    MIN_RATE, calculate_deposit,
 )
 
 
@@ -84,13 +84,17 @@ class TestDeposit(TestCase):
         deposit = Deposit("invalid_date", 0, 0, 0)
         self.assertEqual(deposit.validate(), ["DATE", "PERIODS", "AMOUNT", "RATE"])
     def test_calc_deposit(self):
-        deposit = Deposit("31.01.2021", 3, 10_0000, 6)
-        result = count_deposit()
+        deposit = Deposit("31.01.2021", 7, 10_000, 6)
+        result = calculate_deposit(deposit)
         self.assertEqual(
-            [
-                ("31.01.2021", 10_050.00),
-                ("28.02.2021", 10_100.25),
-                ("03.03.2021", 10_150.75),
-            ],
+            {
+                "31.01.2021": 10_050.00,
+                "28.02.2021": 10_100.25,
+                "31.03.2021": 10_150.75,
+                "30.04.2021": 10_201.51,
+                "31.05.2021": 10_252.51,
+                "30.06.2021": 10_303.78,
+                "31.07.2021": 10_355.29,
+            },
             result,
         )

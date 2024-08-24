@@ -1,6 +1,6 @@
 import calendar
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 
 MIN_PERIODS = 1
 MAX_PERIODS = 60
@@ -14,19 +14,19 @@ def add_months(sourcedate, months):
     month = sourcedate.month - 1 + months
     year = sourcedate.year + month // 12
     month = month % 12 + 1
-    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
-    return datetime.date(year, month, day)
+    day = calendar.monthrange(year, month)
+    return date(year, month, day[1])
 
 
-def count_deposit(deposit) -> list[tuple[datetime, float]]:
-    rate = deposit.rate / 100
-    _cur_amount = deposit.amount
-    _cur_date = deposit._date
-    result = [(deposit._date, rate * deposit.amount)]
+def calculate_deposit(deposit) -> dict[str, float]:
+    rate = deposit.rate / (100 * 12)
+    _cur_amount = deposit.amount + rate * deposit.amount
+    _cur_date = datetime.strptime(deposit.date, "%d.%m.%Y")
+    result = {_cur_date.strftime("%d.%m.%Y"): round(_cur_amount, 2)}
     for i in range(1, deposit.periods):
         _cur_amount += _cur_amount * rate
         _cur_date = add_months(_cur_date, 1)
-        result.append((_cur_date, _cur_amount))
+        result[_cur_date.strftime("%d.%m.%Y")] = round(_cur_amount, 2)
     return result
 
 
