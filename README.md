@@ -14,7 +14,7 @@ Content-Type: application/json
 {
     "date": "01.01.2022",
     "periods": 1,
-    "amount": 1_0000,
+    "amount": 10000,
     "rate": 2
 }
 ```
@@ -23,8 +23,8 @@ Content-Type: application/json
 
 ### Аргументы
 
-* `HOST`: адрес хоста
-* `PORT`: порт
+* `HOST`: адрес хоста (по-умолчанию `localhost`)
+* `PORT`: порт (по-умолчанию `8000`)
 
 Пример использования:
 
