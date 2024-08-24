@@ -11,9 +11,12 @@ app = Flask(__name__)
 @app.route("/deposit", methods=["GET"])
 def create_deposit():
     deposit_json = request.get_json()
-    deposit = Deposit(**deposit_json)
-    if result := deposit.validate():
-        return jsonify({"error": f"Invalid operators: {result}"}), 400
+    try:
+        deposit = Deposit(**deposit_json)
+        if result := deposit.validate():
+            return jsonify({"error": f"Invalid operators: {result}"}), 400
+    except TypeError:
+        return jsonify({"error": f"Invalid arguments"}), 400
     result = calculate_deposit(deposit)
     return jsonify(result), 200
 
