@@ -1,3 +1,4 @@
+import calendar
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -9,6 +10,26 @@ MIN_RATE = 1
 MAX_RATE = 8
 
 
+def add_months(sourcedate, months):
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return datetime.date(year, month, day)
+
+
+def count_deposit(deposit) -> list[tuple[datetime, float]]:
+    rate = deposit.rate / 100
+    _cur_amount = deposit.amount
+    _cur_date = deposit._date
+    result = [(deposit._date, rate * deposit.amount)]
+    for i in range(1, deposit.periods):
+        _cur_amount += _cur_amount * rate
+        _cur_date = add_months(_cur_date, 1)
+        result.append((_cur_date, _cur_amount))
+    return result
+
+
 @dataclass
 class Deposit:
     date: str
@@ -16,23 +37,33 @@ class Deposit:
     amount: int
     rate: int
 
-    def verify_periods(self) -> bool:
+    def validate_periods(self) -> bool:
         return (
             isinstance(self.periods, int) and MIN_PERIODS <= self.periods <= MAX_PERIODS
         )
 
-    def verify_amount(self):
+    def validate_amount(self):
         return isinstance(self.amount, int) and MIN_AMOUNT <= self.amount <= MAX_AMOUNT
 
-    def verify_rate(self):
+    def validate_rate(self):
         return isinstance(self.rate, int) and MIN_RATE <= self.rate <= MAX_RATE
 
-    def verify_date(self):
-        day, month, year = self.date.split(".")
-        if len(day) != 2 or len(month) != 2 or len(year) != 4:
-            return False
+    def validate_date(self):
         try:
+            day, month, year = self.date.split(".")
+            if len(day) != 2 or len(month) != 2 or len(year) != 4:
+                return False
             datetime.strptime(self.date, "%d.%m.%Y")
             return True
         except ValueError:
             return False
+
+    def validate(self):
+        attributes = (
+            ("DATE", self.validate_date),
+            ("PERIODS", self.validate_periods),
+            ("AMOUNT", self.validate_amount),
+            ("RATE", self.validate_rate),
+        )
+        result = [item for item, function in attributes if not function()]
+        return result
