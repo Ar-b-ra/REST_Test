@@ -10,7 +10,7 @@ MIN_RATE = 1
 MAX_RATE = 8
 
 
-def add_months(sourcedate, months):
+def add_months(sourcedate: datetime, months: int):
     month = sourcedate.month - 1 + months
     year = sourcedate.year + month // 12
     month = month % 12 + 1
