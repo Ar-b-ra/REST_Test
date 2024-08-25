@@ -1,3 +1,7 @@
+##Основная форма
+
+Для того, чтобы увидеть расчёт депозита, достаточно запустить приложение и перейти по ссылке: `<HOST>:<PORT>>
+
 ## API
 
 ### GET /deposit
@@ -7,16 +11,8 @@
 Пример запроса:
 
 ```http
-GET /deposit HTTP/1.1
-Host: example.com
+"GET /deposit?date=21.01.2024&periods=7&amount=10000&rate=2 HTTP/1.1"
 Content-Type: application/json
-
-{
-    "date": "01.01.2022",
-    "periods": 1,
-    "amount": 10000,
-    "rate": 2
-}
 ```
 
 ## DOCKER
