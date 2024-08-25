@@ -12,16 +12,21 @@ calculateButton.addEventListener("click", (e) => {
         rate: parseInt(formData.get("rate")),
     };
     console.log('Request data:', depositData); // Add this line for debugging
-    fetch("/deposit", {
+    const url = new URL("/deposit", window.location.origin);
+    url.searchParams.set("date", depositData.date);
+    url.searchParams.set("periods", depositData.periods);
+    url.searchParams.set("amount", depositData.amount);
+    url.searchParams.set("rate", depositData.rate);
+
+    fetch(url.href, {
     method: "GET",
     headers: {
         "Content-Type": "application/json",
         },
-        body: JSON.stringify(depositData),
     })
     .then((response) => {
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`${response.json()} Status: ${response.status}`);
         }
         return response.json();
     })
