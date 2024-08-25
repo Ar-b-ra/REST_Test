@@ -39,5 +39,19 @@ class TestDepositRoute(unittest.TestCase):
         self.assertIsInstance(response.json, dict)
         self.assertIn("error", response.json)
 
+    def test_all_nonefields(self):
+        deposit_json = {
+            "date": None,
+            "periods": None,
+            "amount": None,
+            "rate": None
+        }
+        response = self.app.get(
+            f"/deposit?date={deposit_json['date']}&periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}")
+
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIsInstance(response.json, dict)
+        self.assertIn("error", response.json)
 if __name__ == "__main__":
     unittest.main()

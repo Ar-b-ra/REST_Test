@@ -13,11 +13,11 @@ def index():
 
 @app.route("/deposit", methods=["GET"])
 def create_deposit():
-    deposit_values = {"date": request.args.get("date", ""),
-                       "periods": int(request.args.get("periods")),
-                       "amount": int(request.args.get("amount")),
-                       "rate": int(request.args.get("rate"))}
     try:
+        deposit_values = {"date": request.args.get("date", ""),
+                          "periods": int(request.args.get("periods")),
+                          "amount": int(request.args.get("amount")),
+                          "rate": int(request.args.get("rate"))}
         deposit = Deposit(**deposit_values)
         if result := deposit.validate():
             return jsonify({"error": f"Invalid operators: {result}"}), 400
