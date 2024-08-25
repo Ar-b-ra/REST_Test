@@ -12,7 +12,7 @@ class TestDepositRoute(unittest.TestCase):
             "amount": 1_0000,
             "rate": 2
         }
-        response = self.app.get("/deposit", json=deposit_json)
+        response = self.app.get(f"/deposit?date={deposit_json['date']}&periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}")
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
 
@@ -23,7 +23,7 @@ class TestDepositRoute(unittest.TestCase):
             "amount": 1_0000,
             "rate": 2
         }
-        response = self.app.get("/deposit", json=deposit_json)
+        response = self.app.get(f"/deposit?date={deposit_json['date']}&periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}")
         self.assertEqual(response.status_code, 400)
         self.assertIsInstance(response.json, dict)
         self.assertIn("error", response.json)
@@ -34,7 +34,7 @@ class TestDepositRoute(unittest.TestCase):
             "amount": 1_0000,
             "rate": 2
         }
-        response = self.app.get("/deposit", json=deposit_json)
+        response = self.app.get(f"/deposit?periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}")
         self.assertEqual(response.status_code, 400)
         self.assertIsInstance(response.json, dict)
         self.assertIn("error", response.json)

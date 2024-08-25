@@ -13,12 +13,15 @@ def index():
 
 @app.route("/deposit", methods=["GET"])
 def create_deposit():
-    deposit_json = request.get_json()
+    deposit_values = {"date": request.args.get("date", ""),
+                       "periods": int(request.args.get("periods")),
+                       "amount": int(request.args.get("amount")),
+                       "rate": int(request.args.get("rate"))}
     try:
-        deposit = Deposit(**deposit_json)
+        deposit = Deposit(**deposit_values)
         if result := deposit.validate():
             return jsonify({"error": f"Invalid operators: {result}"}), 400
-    except TypeError:
+    except (TypeError, ValueError):
         return jsonify({"error": f"Invalid arguments"}), 400
     result = calculate_deposit(deposit)
     return jsonify(result), 200
