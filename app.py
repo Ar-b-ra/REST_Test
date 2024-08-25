@@ -7,22 +7,26 @@ from deposit_resolver import Deposit, calculate_deposit
 
 app = Flask(__name__, template_folder="templates")
 
+
 @app.route("/")
 def index():
     return render_template("./index.html")
 
+
 @app.route("/deposit", methods=["GET"])
 def create_deposit():
-    try:
-        deposit_values = {"date": request.args.get("date", ""),
-                          "periods": int(request.args.get("periods")),
-                          "amount": int(request.args.get("amount")),
-                          "rate": int(request.args.get("rate"))}
-        deposit = Deposit(**deposit_values)
-        if result := deposit.validate():
-            return jsonify({"error": f"Invalid operators: {result}"}), 400
-    except (TypeError, ValueError):
-        return jsonify({"error": f"Invalid arguments"}), 400
+    deposit_values = {}
+    for key, _type in [("date", str), ("periods", int), ("amount", int), ("rate", int)]:
+        _value = request.args.get(key)
+        try:
+            _value = _type(_value)
+        except (TypeError, ValueError):
+            pass
+        finally:
+            deposit_values[key] = _value
+    deposit = Deposit(**deposit_values)
+    if invalid_arguments := deposit.validate():
+        return jsonify({"error": f"Invalid operators: {invalid_arguments}"}), 400
     result = calculate_deposit(deposit)
     return jsonify(result), 200
 
