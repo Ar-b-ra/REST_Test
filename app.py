@@ -1,12 +1,15 @@
 import argparse
 import logging
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 
 from deposit_resolver import Deposit, calculate_deposit
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 
+@app.route("/")
+def index():
+    return render_template("./index.html")
 
 @app.route("/deposit", methods=["GET"])
 def create_deposit():
