@@ -25,10 +25,14 @@ calculateButton.addEventListener("click", (e) => {
         },
     })
     .then((response) => {
-        if (!response.ok) {
-            throw new Error(`${response.json()} Status: ${response.status}`);
-        }
+      if (!response.ok) {
+        return response.text().then((text) => {
+          console.log(text); // Это должно вывести текст ответа
+          throw new Error(`${text} Status: ${response.status}`);
+        });
+      } else {
         return response.json();
+      }
     })
     .then((data) => {
         if (data.error) {
