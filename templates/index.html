@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deposit Calculator</title>
+</head>
+<body>
+    <h1>Deposit Calculator</h1>
+    <form id="deposit-form">
+        <label for="date">Date:</label>
+        <input type="text" id="date" name="date"><br><br>
+        <label for="periods">Periods:</label>
+        <input type="number" id="periods" name="periods"><br><br>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount"><br><br>
+        <label for="rate">Rate:</label>
+        <input type="number" id="rate" name="rate"><br><br>
+        <button id="calculate-button">Calculate</button>
+    </form>
+    <div id="result"></div>
+    <script src="{{ url_for('static', filename='deposit.js') }}"></script>
+</body>
+</html>
