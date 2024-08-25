@@ -3,10 +3,12 @@ from unittest import TestCase
 from deposit_resolver import (
     Deposit,
     MAX_AMOUNT,
+    MIN_PERIODS,
     MAX_PERIODS,
     MAX_RATE,
     MIN_AMOUNT,
-    MIN_RATE, calculate_deposit,
+    MIN_RATE,
+    calculate_deposit,
 )
 
 
@@ -18,11 +20,11 @@ class TestDeposit(TestCase):
         self.assertTrue(self.test_deposit.validate_periods())
 
     def test_verify_periods_negative(self):
-        self.test_deposit.periods = MIN_AMOUNT - 1
+        self.test_deposit.periods = MIN_PERIODS - 1
         self.assertFalse(self.test_deposit.validate_periods())
-        self.test_deposit.periods = MAX_AMOUNT + 1
+        self.test_deposit.periods = MAX_PERIODS + 1
         self.assertFalse(self.test_deposit.validate_periods())
-        self.test_deposit.periods = str(MAX_AMOUNT)
+        self.test_deposit.periods = str(MAX_PERIODS)
         self.assertFalse(self.test_deposit.validate_periods())
 
     def test_verify_amount(self):
@@ -83,6 +85,7 @@ class TestDeposit(TestCase):
     def test_multiple_invalid_attributes(self):
         deposit = Deposit("invalid_date", 0, 0, 0)
         self.assertEqual(deposit.validate(), ["DATE", "PERIODS", "AMOUNT", "RATE"])
+
     def test_calc_deposit(self):
         deposit = Deposit("31.01.2021", 7, 10_000, 6)
         result = calculate_deposit(deposit)
