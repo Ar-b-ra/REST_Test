@@ -1,14 +1,13 @@
 from unittest import TestCase
 
-from deposit_resolver import (
-    Deposit,
+from src.deposit_resolver import Deposit, calculate_deposit
+from src.config import (
     MAX_AMOUNT,
-    MIN_PERIODS,
     MAX_PERIODS,
     MAX_RATE,
     MIN_AMOUNT,
+    MIN_PERIODS,
     MIN_RATE,
-    calculate_deposit,
 )
 
 

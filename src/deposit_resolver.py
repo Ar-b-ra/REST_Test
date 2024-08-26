@@ -2,12 +2,14 @@ import calendar
 from dataclasses import dataclass
 from datetime import date, datetime
 
-MIN_PERIODS = 1
-MAX_PERIODS = 60
-MIN_AMOUNT = 10_000
-MAX_AMOUNT = 3_000_000
-MIN_RATE = 1
-MAX_RATE = 8
+from src.config import (
+    MAX_AMOUNT,
+    MAX_PERIODS,
+    MAX_RATE,
+    MIN_AMOUNT,
+    MIN_PERIODS,
+    MIN_RATE,
+)
 
 
 def add_months(sourcedate: datetime, months: int):
