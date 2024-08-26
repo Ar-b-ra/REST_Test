@@ -1,5 +1,7 @@
 import unittest
-from app import app
+from http import HTTPStatus
+
+from src.app import app
 
 
 class TestDepositRoute(unittest.TestCase):
@@ -11,7 +13,7 @@ class TestDepositRoute(unittest.TestCase):
         response = self.app.get(
             f"/deposit?date={deposit_json['date']}&periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}"
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertIsInstance(response.json, dict)
 
     def test_invalid_deposit(self):
@@ -19,7 +21,7 @@ class TestDepositRoute(unittest.TestCase):
         response = self.app.get(
             f"/deposit?date={deposit_json['date']}&periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}"
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
         self.assertIsInstance(response.json, dict)
         self.assertIn("error", response.json)
 
@@ -28,7 +30,7 @@ class TestDepositRoute(unittest.TestCase):
         response = self.app.get(
             f"/deposit?periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}"
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
         self.assertIsInstance(response.json, dict)
         self.assertIn("error", response.json)
 
@@ -38,7 +40,7 @@ class TestDepositRoute(unittest.TestCase):
             f"/deposit?date={deposit_json['date']}&periods={deposit_json['periods']}&amount={deposit_json['amount']}&rate={deposit_json['rate']}"
         )
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
         self.assertIsInstance(response.json, dict)
         self.assertIn("error", response.json)
 

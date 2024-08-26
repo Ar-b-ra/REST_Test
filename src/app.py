@@ -1,10 +1,11 @@
 import argparse
 import logging
+from http import HTTPStatus
 
 from flask import Blueprint, Flask, make_response, render_template, request
 from flask_restx import Api, Resource, fields
 
-from deposit_resolver import Deposit, calculate_deposit
+from src.deposit_resolver import Deposit, calculate_deposit
 
 swagger_blueprint = Blueprint("swagger", __name__, url_prefix="/docs")
 
@@ -52,9 +53,11 @@ class DepositResolver(Resource):
                 deposit_values[key] = _value
         deposit = Deposit(**deposit_values)
         if invalid_arguments := deposit.validate():
-            return {"error": f"Invalid operators: {invalid_arguments}"}, 400
+            return {
+                "error": f"Invalid operators: {invalid_arguments}"
+            }, HTTPStatus.BAD_REQUEST
         result = calculate_deposit(deposit)
-        return result, 200
+        return result, HTTPStatus.OK
 
 
 if __name__ == "__main__":
