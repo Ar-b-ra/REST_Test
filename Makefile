@@ -3,7 +3,7 @@ venv:
 	venv/bin/python3 pip install -r requirements.txt
 
 test:
-	pytest
+	coverage run -m pytest --cov=src
 
 run:
 	.venv/bin/python3 -m src.app
