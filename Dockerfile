@@ -13,7 +13,7 @@ COPY . /REST_Test
 WORKDIR /REST_Test
 # Установка зависимостей
 RUN pip3 install --upgrade pip && \
-    pip3 install -r requirements.txt
+    pip3 install -r requirements/requirements.txt
 # Запуск приложения
 EXPOSE 8000
 CMD ["python3", "app.py", "--host", "${HOST}", "--port", "${PORT}"]

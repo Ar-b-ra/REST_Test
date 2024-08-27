@@ -37,7 +37,7 @@ jobs:
         ruff check ./
     - name: Test with pytest
       run: |
-        coverage run --data-file tests/.coverage -m pytest -s
+        make test
         coverage json --data-file tests/.coverage -o buf/tests/coverage.json
         coverage report --data-file tests/.coverage
     - name: Upload coverage reports to Codecov
