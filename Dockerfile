@@ -1,10 +1,8 @@
 FROM python:latest
-ENV HOST=localhost
-ENV PORT=8000
 RUN apt update -y && \
     apt upgrade -y && \
     apt install -y --no-install-recommends \
-    python3-pip \
+    python3-pip && \
     apt autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 # Копирование файлов в рабочую директорию
@@ -15,5 +13,7 @@ WORKDIR /REST_Test
 RUN pip3 install --upgrade pip && \
     pip3 install -r requirements/requirements.txt
 # Запуск приложения
-EXPOSE 8000
-CMD ["python3", "app.py", "--host", "${HOST}", "--port", "${PORT}"]
+ENV HOST=0.0.0.0
+ENV PORT=8000
+EXPOSE ${PORT}
+CMD ["python3", "-m", "src.app"]

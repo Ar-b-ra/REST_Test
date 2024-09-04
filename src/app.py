@@ -63,7 +63,7 @@ class DepositResolver(Resource):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--host", default="localhost", type=str, help="Адрес хоста")
+    parser.add_argument("--host", default="0.0.0.0", type=str, help="Адрес хоста")
     parser.add_argument("--port", "-p", default=8000, type=int, help="Порт")
 
     args = parser.parse_args()
